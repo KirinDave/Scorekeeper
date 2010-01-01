@@ -39,7 +39,7 @@
    :else (new-history (inc (:wins history)) (:losses history))))
 
 (defn history-for-player [player] 
-  (@(:histories *league*) player))
+  (or (@(:histories *league*) player)) (new-history))
 
 (defn set-history! [player history]
   (dosync
@@ -47,7 +47,13 @@
 
 ;;; Player functions
 
-(defn new-player [name] {:tag ::player :name name})
+
+
+(defn- pname-ok? [name]
+  (not (re-find #"/" name)))
+(defn new-player [name] 
+  (if (pname-ok? name) {:tag ::player :name name}
+      (throw (Exception. "Bad player name."))))
 (defn make-player!
   "Makes a player with a new name and optionally a new history."
   ([name history]
@@ -77,6 +83,9 @@
   (apply str (filter #(Character/isUpperCase %1)
                      (:name player))))
 
+(defn update-player-history! [player winlose]
+  (let [phist (history-for-player player)]
+    (set-history! player (inc-history phist winlose))))
 
 ;;; Team functions
 
@@ -139,10 +148,23 @@
 ; Composite functions
 
 (defn update-with-game! [game]
-  )
+  (let [winners (:winner game)
+        losers  (:loser  game)]
+    (dosync 
+     (doseq [player (concat winners losers)]
+         (update-player-history! player (winners player)))
+     (update-ladder! winners losers))))
 
-;;; Goals:
-;;; 1. Add/remove/rename players and track compute their history.
-;;; 2. Add/remove teams (which should just be sets of players)
-;;; 2a. Find teams with a player(s) in them by name or abbreviation.
+; Convenience 
+
+(defn get-team! [team-string]
+  (or (first (find-teams-by-members team-string))
+      (let [player-strings (re-split #"/" team-string)
+            players        (map find-player )]
+        (if (= (count player-strings) (count players))
+          (apply make-team! players)
+          (throw (Exception. "Bad player spec"))))))
+
+(defn get-player! [player-name]
+  (or (find-player player-name) (make-player! player-name)))
 
