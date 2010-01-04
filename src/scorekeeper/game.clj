@@ -160,10 +160,10 @@
 (defn get-team! [team-string]
   (or (first (find-teams-by-members team-string))
       (let [player-strings (re-split #"/" team-string)
-            players        (map find-player )]
+            players        (remove nil? (map find-player player-strings))]
         (if (= (count player-strings) (count players))
           (apply make-team! players)
-          (throw (Exception. "Bad player spec"))))))
+          (throw (Exception. "Bad player spec!"))))))
 
 (defn get-player! [player-name]
   (or (find-player player-name) (make-player! player-name)))
