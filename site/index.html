@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html> <head>
+<title>The Ladder</title>
+</head>
+
+<body>
+<h1>The Ladder</h1>
+<h2 id="league-name">--league name here--</h2>
+
+<section id="rankings">
+<ol>
+  <li>Ladder is Empty!</li>
+</ol>
+
+<aside>
+<div id="leagues" class="box">
+  <h3>Leagues</h3>
+  <ol>
+    <li>Default</li>
+  </ol>
+</div>
+
+<div id="roster" class="box">
+<h3>Roster</h3>
+  <ul>
+    <li>No players!</li>
+  </ul>
+</div>
+
+<div id="actions" class="box">
+  <ul>
+    <li><a href="#">Add A Player</a>
+    <div class="subaction-box">
+      <form action="add_player">
+        <label for="pname">New Player Name</label>
+        <input id="pname" type="text"  value="Enter A Name">
+        <input type="submit">
+      </form>
+    </div>
+    </li>
+    <li><a href="#">Add A Team</a>
+    <div class="subaction-box">
+      <form action="add_team">
+        <label for="tname">New Team (in WX/YZ format):</label>
+        <input id="tname" type="text" value="WX/YZ">
+        <input type="submit">
+      </form>
+    </div></li>
+    <li><a href="#">Enter A Game</a>
+    <div class="subaction-box">
+      <form action="add_team">
+        <label for="winner-name">Winner:</label>
+        <input id="winner-name" type="text" value="WX/YZ" />
+        <label for="loser-name">Winner:</label>
+        <input id="loser-name" type="text" value="AB/CD" />
+        <input type="submit">
+      </form>
+    </div></li>
+  </ol>
+</div>
+</aside>
+</body> </html>
