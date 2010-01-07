@@ -1,31 +1,20 @@
 (ns scorekeeper.web 
     (:use [scorekeeper.game]
+          [scorekeeper.web helpers templates]
           [clojure.contrib str-utils seq-utils duck-streams]
           [compojure])
     (:require [net.cgrand.enlive-html :as en])
-    (:import  [java.io InputStream]))
+    (:import  [java.io InputStream File]))
 
 
-; The server can do so much, for so many leagues.
-(defonce leagues (atom {}))
-
-(defn get-league! 
-  ([name] (if-let [l (@leagues name)]
-            l                 ; We already have a league for this name
-            (let [nl (new-league name)] 
-              (swap! leagues assoc name nl)
-              nl)))
-  ([] (get-league! "default")))
-
-(defmacro with-league [name & forms]
-  `(binding [*league* (get-league! ~name)]
-     ~@forms))
-
-
-; Raw server code.
 (defroutes main-app
-  (ANY "/" (html [:h2 "Hello world"]))
-  (POST ""))
+  (RESOURCE "css" "css")
+  (RESOURCE "js" "javascript")
+  (RESOURCE "(png|jpg|gif)" "images")
+  (ANY "/" (with-league (get-league! "default") 
+                        (league-home)))
+  (ANY "*" "Fell Through!"))
+
 
 (defn start-server
   ([port] (run-server {:port port} "/*" (servlet main-app)))

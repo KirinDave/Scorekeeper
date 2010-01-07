@@ -111,6 +111,9 @@
         pred            (fn [team] (every? #(team %1) members))]
     (select pred @(:teams *league*))))
 
+(defn team-nickname [team]
+  (apply str (interpose "/" (map player-nickname team))))
+
 ;;; Games functions
 
 (defn new-game 
@@ -167,4 +170,8 @@
 
 (defn get-player! [player-name]
   (or (find-player player-name) (make-player! player-name)))
+
+(defmacro with-league [league & forms]
+  `(binding [*league* league]
+     ~@forms))
 
