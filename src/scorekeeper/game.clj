@@ -172,6 +172,5 @@
   (or (find-player player-name) (make-player! player-name)))
 
 (defmacro with-league [league & forms]
-  `(binding [*league* league]
+  `(binding [*league* ~league]
      ~@forms))
-
