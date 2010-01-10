@@ -15,9 +15,9 @@
 <aside>
 <div id="leagues" class="box">
   <h3>Leagues</h3>
-  <ol>
+  <ul>
     <li>Default</li>
-  </ol>
+  </ul>
 </div>
 
 <div id="roster" class="box">
@@ -31,18 +31,18 @@
   <ul>
     <li><a href="#">Add A Player</a>
     <div class="subaction-box">
-      <form action="add_player">
+      <form action="add_player" method="POST">
         <label for="pname">New Player Name</label>
-        <input id="pname" type="text"  placeholder="Enter A Name">
-        <input type="submit">
+        <input name="pname" id="pname" type="text"  placeholder="Enter A Name">
+        <input type="submit" value="Submit">
       </form>
     </div>
     </li>
     <li><a href="#">Add A Team</a>
     <div class="subaction-box">
-      <form action="add_team">
+      <form action="add_team" method="POST">
         <label for="tname">New Team (in WX/YZ format):</label>
-        <input id="tname" type="text" placeholder="WX/YZ">
+        <input name="tname" id="tname" type="text" placeholder="WX/YZ">
         <input type="submit">
       </form>
     </div></li>

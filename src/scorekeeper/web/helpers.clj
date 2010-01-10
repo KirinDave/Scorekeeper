@@ -40,9 +40,11 @@
                             (assoc :league-name league-name))
             response    (in-league! league-name 
                                     (handler request))]
-        (println "Response is" response "\nleague-name is " league-name)
         (if-let [new-league-name (:league-name response)]
             (assoc response :session 
                    (assoc (or (:session response) session {}) 
                           :league-name new-league-name))
             response))))
+
+(defn link-league [league-name]
+  (compojure/html [:a {:href (str "set-league/" league-name)} league-name]))
